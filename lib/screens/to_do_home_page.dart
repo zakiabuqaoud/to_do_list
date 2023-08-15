@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_zaki/widgets/add_task_modal.dart';
 
 import '../model/task.dart';
 
@@ -12,6 +13,10 @@ class ToDoHomeScreen extends StatelessWidget {
     const Task(title: "sleep afternoon", isDone: true),
     const Task(title: "buy egg", isDone: false),
   ];
+
+  goToModal(context){
+    showModalBottomSheet(context: context, builder: (_) => AddTaskModal());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +100,9 @@ class ToDoHomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          goToModal(context);
+        },
         backgroundColor: Colors.lightBlueAccent,
         child: const Icon(Icons.add),
       ),
