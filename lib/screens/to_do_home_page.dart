@@ -83,7 +83,7 @@ class ToDoHomeScreen extends StatelessWidget {
                         ),
                         child: ListTile(
                           title: Text(
-                            listOfTask[index].title,
+                            listOfTask[index].title, style: listOfTask[index].isDone ? const TextStyle(decoration: TextDecoration.lineThrough) : null,
                           ),
                           trailing: Checkbox(
                             value: listOfTask[index].isDone,
