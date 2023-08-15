@@ -1,18 +1,16 @@
+
+//import from flutter
 import 'package:flutter/material.dart';
+
+//import from External Libraries
+import 'package:provider/provider.dart';
+
+//import my files
+import 'package:todo_zaki/my_providers/task_provider.dart';
 import 'package:todo_zaki/widgets/add_task_modal.dart';
 
-import '../model/task.dart';
-
 class ToDoHomeScreen extends StatelessWidget {
-  ToDoHomeScreen({Key? key}) : super(key: key);
-
-  final List<Task> listOfTask = [
-    const Task(title: "Drink Tee", isDone: true),
-    const Task(title: "Eat Breakfast", isDone: true),
-    const Task(title: "Drink Kaffee", isDone: true),
-    const Task(title: "sleep afternoon", isDone: true),
-    const Task(title: "buy egg", isDone: false),
-  ];
+  const ToDoHomeScreen({Key? key}) : super(key: key);
 
   goToModal(context){
     showModalBottomSheet(context: context, builder: (_) => AddTaskModal());
@@ -20,21 +18,22 @@ class ToDoHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var listOfTask = context.watch<TaskProvider>().listOfTask;
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
+             Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
-                  CircleAvatar(
+                  const CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 40,
                     child: Icon(
@@ -43,10 +42,10 @@ class ToDoHomeScreen extends StatelessWidget {
                       size: 40,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
-                  Text(
+                  const Text(
                     "Todo",
                     style: TextStyle(
                         fontSize: 54,
@@ -54,8 +53,8 @@ class ToDoHomeScreen extends StatelessWidget {
                         color: Colors.white),
                   ),
                   Text(
-                    "12 Tasks",
-                    style: TextStyle(
+                    "${listOfTask.length} Tasks",
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
@@ -81,13 +80,18 @@ class ToDoHomeScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(
                           left: 16.0,
                         ),
-                        child: ListTile(
-                          title: Text(
-                            listOfTask[index].title, style: listOfTask[index].isDone ? const TextStyle(decoration: TextDecoration.lineThrough) : null,
-                          ),
-                          trailing: Checkbox(
-                            value: listOfTask[index].isDone,
-                            onChanged: (value) {},
+                        child: GestureDetector(
+                          onLongPress:(){
+                            Provider.of<TaskProvider>(context, listen: false).deleteTask(index);
+                          },
+                          child: ListTile(
+                            title: Text(
+                              listOfTask[index].title, style: listOfTask[index].isDone ? const TextStyle(decoration: TextDecoration.lineThrough) : null,
+                            ),
+                            trailing: Checkbox(
+                              value: listOfTask[index].isDone,
+                              onChanged: (value) {},
+                            ),
                           ),
                         ),
                       );

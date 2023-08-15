@@ -1,9 +1,25 @@
+
+//import from flutter
 import 'package:flutter/material.dart';
+//import External Libraries
+import 'package:provider/provider.dart';
+//import my files
+import 'package:todo_zaki/my_providers/task_provider.dart';
+import 'package:todo_zaki/model/task.dart';
 
 class AddTaskModal extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController taskTitleController = TextEditingController();
 
   AddTaskModal({Key? key}) : super(key: key);
+
+  void addTaskInModel(context, String taskTitle) {
+    if (_formKey.currentState!.validate()) {
+      print("here");
+      Provider.of<TaskProvider>(context,listen: false).addTask(Task(title: taskTitle, isDone: false));
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +46,12 @@ class AddTaskModal extends StatelessWidget {
             ),
             TextFormField(
               autofocus: true,
+              controller: taskTitleController,
               decoration: const InputDecoration(
                 hintText: "Add Task Title",
               ),
               validator: (value) {
-                if (value == null || value.isEmpty) {
+                if (value == null || value.trim().isEmpty) {
                   return 'Please enter a value';
                 }
                 return null;
@@ -44,7 +61,9 @@ class AddTaskModal extends StatelessWidget {
               height: 8,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                addTaskInModel(context, taskTitleController.text);
+              },
               child: const Text(
                 "ADD TASK",
                 style: TextStyle(color: Colors.white, fontSize: 16),
