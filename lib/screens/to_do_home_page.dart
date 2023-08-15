@@ -90,7 +90,9 @@ class ToDoHomeScreen extends StatelessWidget {
                             ),
                             trailing: Checkbox(
                               value: listOfTask[index].isDone,
-                              onChanged: (value) {},
+                              onChanged: (value) {
+                                Provider.of<TaskProvider>(context, listen: false).editCheckButton(index, value as bool);
+                              },
                             ),
                           ),
                         ),
